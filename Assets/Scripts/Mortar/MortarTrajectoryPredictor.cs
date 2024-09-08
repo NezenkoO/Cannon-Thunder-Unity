@@ -10,7 +10,7 @@ public class MortarTrajectoryPredictor : TrajectoryPredictor
 {
     [SerializeField] private MortarShellLauncher _mortarShellLauncher;
     [SerializeField] private MortarMovement _mortarMovement;
-    [SerializeField] private PowerSlider _powerSlide;
+    [SerializeField] private SliderWithLabel _powerSlide;
 
     private void Update()
     {

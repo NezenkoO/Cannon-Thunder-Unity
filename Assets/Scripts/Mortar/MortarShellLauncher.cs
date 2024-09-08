@@ -8,13 +8,13 @@ using UnityEngine;
 
 public class MortarShellLauncher : MonoBehaviour
 {
-    public event Action ShellLaunched;
+    public event Action<ProjectileProperties> ShellLaunched;
     public Vector3 LaunchPoint => _launchPoint.transform.position;
 
     [SerializeField] private Transform _launchPoint;
     [SerializeField] private WarFactory _warFactory;
     [SerializeField] private MortarMovement _mortarMovement;
-    [SerializeField] private PowerSlider _powerSlider;
+    [SerializeField] private SliderWithLabel _powerSlider;
     [SerializeField] private ExplosionsSpawner _explosionsSpawner;
 
     private GameBehaviorCollection _shellGameBehaviorCollection = new GameBehaviorCollection();
@@ -35,6 +35,6 @@ public class MortarShellLauncher : MonoBehaviour
         shell.SetExplosionsSpawner(_explosionsSpawner);
         shell.Launch(LaunchPoint, _mortarMovement.LookDirection * _powerSlider.Value);
         _shellGameBehaviorCollection.Add(shell);
-        ShellLaunched?.Invoke();
+        ShellLaunched?.Invoke(new ProjectileProperties(_mortarMovement.LookDirection, LaunchPoint, _powerSlider.Value));
     }
 }

@@ -5,7 +5,8 @@ public class CameraShellLaunchAnimation : MonoBehaviour
 {
     [SerializeField] private MortarShellLauncher _mortarShellLauncher;
     [SerializeField] private float _animationDuration;
-    [SerializeField] private float shakeIntensity;
+    [SerializeField] private float _shakeIntensity;
+    [SerializeField] private float _minShakeValue;
 
     private Quaternion originalRotation;
     private Coroutine _coroutine;
@@ -22,19 +23,20 @@ public class CameraShellLaunchAnimation : MonoBehaviour
         _mortarShellLauncher.ShellLaunched -= ShakeCamera;
     }
 
-    private void ShakeCamera()
+    private void ShakeCamera(ProjectileProperties projectileProperties)
     {
         if (_coroutine != null) StopCoroutine(_coroutine);
-        _coroutine = StartCoroutine(ShakeCameraAnimation2());
+        _coroutine = StartCoroutine(ShakeCameraAnimation2(projectileProperties));
     }
 
-    private IEnumerator ShakeCameraAnimation2()
+    private IEnumerator ShakeCameraAnimation2(ProjectileProperties projectileProperties)
     {
         float time = 0;
+        float scaledShakeIntensity = Mathf.Max(_shakeIntensity * projectileProperties.InitialSpeed, _minShakeValue);
         Quaternion targetRotation = originalRotation * Quaternion.Euler(
-              Random.Range(-shakeIntensity, shakeIntensity),
-              Random.Range(-shakeIntensity, shakeIntensity),
-              Random.Range(-shakeIntensity, shakeIntensity)
+              Random.Range(-scaledShakeIntensity, scaledShakeIntensity),
+              Random.Range(-scaledShakeIntensity, scaledShakeIntensity),
+              Random.Range(-scaledShakeIntensity, scaledShakeIntensity)
         );
 
         while (time < _animationDuration / 2)

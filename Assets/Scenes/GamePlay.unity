@@ -395,7 +395,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barrel: {fileID: 1612279525}
   _mortarShellLauncher: {fileID: 138866437}
-  _recoilDistance: 4
+  _recoilMagnitude: 0.1
+  _minRecoilValue: 3
   _animationDuration: 0.15
 --- !u!1 &226359806
 GameObject:
@@ -988,7 +989,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mortarShellLauncher: {fileID: 138866437}
   _animationDuration: 0.1
-  shakeIntensity: 2
+  _shakeIntensity: 0.06
+  _minShakeValue: 2
 --- !u!1 &1071606085
 GameObject:
   m_ObjectHideFlags: 0
