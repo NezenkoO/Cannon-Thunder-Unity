@@ -1,0 +1,97 @@
+﻿using System;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class Shell : WarEntity
+{
+    private ProjectileConfig _projectileConfig;
+    private Vector3 _launchPoint, _launchVelocity, _hitNormalInfo;
+    private int _currentBounceCount = 0;
+    private float _age;
+    private ExplosionsSpawner _explosionsSpawner;
+
+    public void SetConfig(ProjectileConfig projectileConfig)
+    {
+        _projectileConfig = projectileConfig;
+    }
+
+    public void SetExplosionsSpawner(ExplosionsSpawner explosionObjectPool)
+    {
+        _explosionsSpawner = explosionObjectPool;
+    }
+
+    public void Launch(Vector3 launchPoint, Vector3 launchVelocity)
+    {
+        if(_projectileConfig == null) throw new InvalidOperationException("ProjectileConfig is not set!");
+        _launchPoint = launchPoint;
+        _launchVelocity = launchVelocity;
+    }
+
+    public override bool GameUpdate()
+    {
+        _age += Time.deltaTime;
+
+        if (_age >= _projectileConfig.MaxAge)
+        {
+            _hitNormalInfo = Vector3.zero;
+            Recycle();
+            return false;
+        }
+
+        Vector3 currentPosition = _launchPoint + _launchVelocity * _age;
+        currentPosition.y -= 0.5f * _projectileConfig.Gravity * _age * _age;
+        Vector3 direction = currentPosition - transform.position;
+
+        if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hitInfo, direction.magnitude))
+        {
+            _hitNormalInfo = hitInfo.normal;
+
+            if (hitInfo.transform.TryGetComponent(out IShallInteractable shallInteractable))
+            {
+                shallInteractable.ShellTouch(hitInfo);
+            }
+            if (++_currentBounceCount > _projectileConfig.MaxBounceCount)
+            {
+                Recycle();
+                return false;
+            }
+
+            Vector3 currentVelocity = _launchVelocity;
+            currentVelocity.y -= 0.5f * _projectileConfig.Gravity * _age * _age;
+            _launchVelocity = CalculateBounce(currentVelocity, hitInfo.normal);
+            _launchPoint = transform.position;
+            _age = 0f;
+        }
+        else
+        {
+            transform.position = currentPosition;
+        }
+
+        return true;
+    }
+
+    private Vector3 CalculateBounce(Vector3 incomingVelocity, Vector3 surfaceNormal)
+    {
+        var normal = surfaceNormal;
+        var dotProduct = Vector3.Dot(incomingVelocity, normal);
+        var absoluteNormalizedDotProduct = Mathf.Abs(Vector3.Dot(incomingVelocity.normalized, normal.normalized));
+        var bounceDampingFactor = Mathf.Clamp01(_projectileConfig.BounceDampingFactor - absoluteNormalizedDotProduct);
+        var reflectedVelocity = incomingVelocity - 2 * dotProduct * normal;
+
+        reflectedVelocity *= _projectileConfig.Bounciness * bounceDampingFactor;
+        reflectedVelocity.y -= _projectileConfig.Gravity * Time.deltaTime;
+
+        return reflectedVelocity;
+    }
+
+
+    public override void Recycle()
+    {
+        if(_explosionsSpawner != null)
+        {
+            _explosionsSpawner.AddExplosion(transform.position, Quaternion.LookRotation(_hitNormalInfo));
+        }
+
+        WarEntityReclaim.Recycle(this);
+    }
+}

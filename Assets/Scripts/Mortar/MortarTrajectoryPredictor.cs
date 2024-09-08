@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+
+public class MortarTrajectoryPredictor : TrajectoryPredictor
+{
+    [SerializeField] private MortarShellLauncher _mortarShellLauncher;
+    [SerializeField] private MortarMovement _mortarMovement;
+    [SerializeField] private PowerSlider _powerSlide;
+
+    private void Update()
+    {
+        PredictTrajectory(new ProjectileProperties(_mortarMovement.LookDirection,
+            _mortarShellLauncher.LaunchPoint, _powerSlide.Value));
+    }
+}
