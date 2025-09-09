@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class ExplosionObjectPool : MonoBehaviour, IWarEntityRecycler
 {
-    [SerializeField] protected WarFactory _warFactory;
+    [SerializeField] private WarFactory _warFactory;
     [SerializeField] private int _initialSize = 10;
 
-    private List<WarEntity> _availableEntities = new List<WarEntity>();
-    private List<WarEntity> _allEntities = new List<WarEntity>();
+    private readonly List<WarEntity> _availableEntities = new();
+    private readonly List<WarEntity> _allEntities = new();
 
     private void Start()
     {
-        for (int i = 0; i < _initialSize; i++)
+        for (var i = 0; i < _initialSize; i++)
         {
             CreateNewEntity();
         }
@@ -19,21 +19,25 @@ public class ExplosionObjectPool : MonoBehaviour, IWarEntityRecycler
 
     private WarEntity CreateNewEntity()
     {
-        var explosion = _warFactory.GetExplosion();
-        explosion.WarEntityReclaim = this;
-        explosion.gameObject.SetActive(false);
-        _availableEntities.Add(explosion);
-        _allEntities.Add(explosion);
-        return explosion;
+        var entity = _warFactory.GetExplosion();
+        entity.WarEntityReclaim = this;
+        entity.gameObject.SetActive(false);
+
+        _availableEntities.Add(entity);
+        _allEntities.Add(entity);
+
+        return entity;
     }
 
     public WarEntity GetFromPool()
     {
-        if (_availableEntities.Count <= 0) 
-            return CreateNewEntity();
-        
-        var entity = _availableEntities[0];
-        _availableEntities.RemoveAt(0);
+        var entity = _availableEntities.Count > 0
+            ? _availableEntities[0]
+            : CreateNewEntity();
+
+        if (_availableEntities.Count > 0)
+            _availableEntities.RemoveAt(0);
+
         entity.gameObject.SetActive(true);
         return entity;
     }
@@ -50,6 +54,7 @@ public class ExplosionObjectPool : MonoBehaviour, IWarEntityRecycler
         {
             Destroy(entity.gameObject);
         }
+
         _availableEntities.Clear();
         _allEntities.Clear();
     }

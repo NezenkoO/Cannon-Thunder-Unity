@@ -12,7 +12,7 @@ public class MortarShellLauncher : MonoBehaviour
     [SerializeField] private SliderWithLabel _powerSlider;
     [SerializeField] private ExplosionsSpawner _explosionsSpawner;
 
-    private GameBehaviorCollection _shellGameBehaviorCollection = new GameBehaviorCollection();
+    private GameBehaviorCollection _shellGameBehaviorCollection = new();
 
     private void Update()
     {

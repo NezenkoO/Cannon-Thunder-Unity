@@ -39,11 +39,11 @@ public class Shell : WarEntity
             return false;
         }
 
-        Vector3 currentPosition = _launchPoint + _launchVelocity * _age;
+        var currentPosition = _launchPoint + _launchVelocity * _age;
         currentPosition.y -= 0.5f * _shellConfig.Gravity * _age * _age;
-        Vector3 direction = currentPosition - transform.position;
+        var direction = currentPosition - transform.position;
 
-        if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hitInfo, direction.magnitude))
+        if (Physics.Raycast(transform.position, direction.normalized, out var hitInfo, direction.magnitude))
         {
             _hitNormalInfo = hitInfo.normal;
 
@@ -57,7 +57,7 @@ public class Shell : WarEntity
                 return false;
             }
 
-            Vector3 currentVelocity = _launchVelocity;
+            var currentVelocity = _launchVelocity;
             currentVelocity.y -= 0.5f * _shellConfig.Gravity * _age * _age;
             _launchVelocity = CalculateBounce(currentVelocity, hitInfo.normal);
             _launchPoint = transform.position;

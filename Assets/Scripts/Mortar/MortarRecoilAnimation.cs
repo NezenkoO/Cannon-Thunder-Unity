@@ -18,14 +18,11 @@ public class MortarRecoilAnimation : MonoBehaviour
         _originalPosition = _barrel.localPosition;
     }
 
-    private void OnDisable()
-    {
-        _mortarShellLauncher.ShellLaunched -= Recoil;
-    }
-
     private void Recoil(ProjectileProperties projectileProperties)
     {
-        if (_coroutine != null) StopCoroutine(_coroutine);
+        if (_coroutine != null) 
+            StopCoroutine(_coroutine);
+        
         _coroutine = StartCoroutine(AnimateRecoil(projectileProperties));
     }
 
@@ -50,5 +47,10 @@ public class MortarRecoilAnimation : MonoBehaviour
         }
 
         _barrel.localPosition = _originalPosition;
+    }
+    
+    private void OnDisable()
+    {
+        _mortarShellLauncher.ShellLaunched -= Recoil;
     }
 }

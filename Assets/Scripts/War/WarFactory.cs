@@ -9,7 +9,8 @@ public class WarFactory : GameObjectFactory, IWarEntityRecycler
     [SerializeField] private Explosion _explosionPrefab;
 
 
-    public Explosion GetExplosion() => Get(_explosionPrefab);
+    public Explosion GetExplosion() => 
+        Get(_explosionPrefab);
 
     public Shell GetShell()
     {

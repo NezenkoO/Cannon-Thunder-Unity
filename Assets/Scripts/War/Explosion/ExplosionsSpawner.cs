@@ -7,6 +7,7 @@ public class ExplosionsSpawner : MonoBehaviour
     public void AddExplosion(Vector3 position, Quaternion rotation)
     {
         var explosion = _explosionObjectPool.GetFromPool();
+        
         explosion.transform.position = position;
         explosion.transform.rotation = rotation;
     }

@@ -5,45 +5,40 @@ public class ShellBurstDrawer : MonoBehaviour, IShallInteractable
 {
     [SerializeField] private Texture2D _defaultTexture;
     [SerializeField] private Texture2D _burstTexture;
-    [SerializeField] private float burstSize = 1f;
+    [SerializeField] private float _burstSize = 1f;
 
     private RenderTexture _renderTexture;
-    private Renderer _renderer;
-    private MeshCollider _meshCollider;
+    private MeshCollider _colliderMesh;
+    private Renderer _rend;
 
     private void OnEnable()
     {
+        _rend = GetComponent<Renderer>();
+        _colliderMesh = GetComponent<MeshCollider>();
+        
         _renderTexture = new RenderTexture(512, 512, 32);
-        _renderer = GetComponent<Renderer>();
-        _meshCollider = GetComponent<MeshCollider>();
-        _renderer.material.SetTexture("_MainTex", _renderTexture);
+        _rend.material.SetTexture("_MainTex", _renderTexture);
+        
         Graphics.Blit(_defaultTexture, _renderTexture);
     }
 
     public void ShellTouch(RaycastHit hit)
     {
-        Vector2 pixelUV = hit.textureCoord;
-
-        float burstUVSizeX = burstSize / _meshCollider.bounds.size.x;
-        float burstUVSizeY = burstSize / _meshCollider.bounds.size.y;
-
-        pixelUV.x *= _renderTexture.width;
-        pixelUV.y *= _renderTexture.height;
+        var pixelUV = new Vector2(hit.textureCoord.x * _renderTexture.width, hit.textureCoord.y * _renderTexture.height);
+        var burstUVSize = new Vector2(_burstSize / _colliderMesh.bounds.size.x, _burstSize / _colliderMesh.bounds.size.y) * _renderTexture.width;
 
         RenderTexture.active = _renderTexture;
-
         GL.PushMatrix();
         GL.LoadPixelMatrix(0, _renderTexture.width, _renderTexture.height, 0);
 
-        Rect drawRect = new Rect
-        (
-            pixelUV.x - (_renderTexture.width * burstUVSizeX) / 2,
-            (_renderTexture.height - pixelUV.y) - (_renderTexture.height * burstUVSizeY) / 2,
-            _renderTexture.width * burstUVSizeX,
-            _renderTexture.height * burstUVSizeY
+        var rect = new Rect(
+            pixelUV.x - burstUVSize.x / 2,
+            _renderTexture.height - pixelUV.y - burstUVSize.y / 2,
+            burstUVSize.x,
+            burstUVSize.y
         );
 
-        Graphics.DrawTexture(drawRect, _burstTexture);
+        Graphics.DrawTexture(rect, _burstTexture);
 
         GL.PopMatrix();
         RenderTexture.active = null;
