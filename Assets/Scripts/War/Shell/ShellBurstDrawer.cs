@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Renderer), typeof(MeshCollider))]
 public class ShellBurstDrawer : MonoBehaviour, IShallInteractable

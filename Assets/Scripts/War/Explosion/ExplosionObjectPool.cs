@@ -19,7 +19,7 @@ public class ExplosionObjectPool : MonoBehaviour, IWarEntityRecycler
 
     private WarEntity CreateNewEntity()
     {
-        var explosion = _warFactory.GetExplosion;
+        var explosion = _warFactory.GetExplosion();
         explosion.WarEntityReclaim = this;
         explosion.gameObject.SetActive(false);
         _availableEntities.Add(explosion);
@@ -29,17 +29,13 @@ public class ExplosionObjectPool : MonoBehaviour, IWarEntityRecycler
 
     public WarEntity GetFromPool()
     {
-        if (_availableEntities.Count > 0)
-        {
-            var entity = _availableEntities[0];
-            _availableEntities.RemoveAt(0);
-            entity.gameObject.SetActive(true);
-            return entity;
-        }
-        else
-        {
+        if (_availableEntities.Count <= 0) 
             return CreateNewEntity();
-        }
+        
+        var entity = _availableEntities[0];
+        _availableEntities.RemoveAt(0);
+        entity.gameObject.SetActive(true);
+        return entity;
     }
 
     public void Recycle(WarEntity warEntity)

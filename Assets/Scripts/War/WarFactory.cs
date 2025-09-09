@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "WarFactory")]
 public class WarFactory : GameObjectFactory, IWarEntityRecycler
 {
-    [SerializeField] private ProjectileConfig _shellConfig;
+    [SerializeField] private ShellConfig _shellConfig;
     [Header("Prefabs")]
     [SerializeField] private Shell _shellPrefab;
     [SerializeField] private Explosion _explosionPrefab;
 
 
-    public Explosion GetExplosion => Get(_explosionPrefab);
+    public Explosion GetExplosion() => Get(_explosionPrefab);
 
     public Shell GetShell()
     {

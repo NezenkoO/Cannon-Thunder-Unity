@@ -1,18 +1,17 @@
-﻿using System;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Shell : WarEntity
 {
-    private ProjectileConfig _projectileConfig;
-    private Vector3 _launchPoint, _launchVelocity, _hitNormalInfo;
-    private int _currentBounceCount = 0;
-    private float _age;
+    private ShellConfig _shellConfig;
     private ExplosionsSpawner _explosionsSpawner;
+    
+    private Vector3 _launchPoint, _launchVelocity, _hitNormalInfo;
+    private int _currentBounceCount;
+    private float _age;
 
-    public void SetConfig(ProjectileConfig projectileConfig)
+    public void SetConfig(ShellConfig shellConfig)
     {
-        _projectileConfig = projectileConfig;
+        _shellConfig = shellConfig;
     }
 
     public void SetExplosionsSpawner(ExplosionsSpawner explosionObjectPool)
@@ -22,16 +21,18 @@ public class Shell : WarEntity
 
     public void Launch(Vector3 launchPoint, Vector3 launchVelocity)
     {
-        if(_projectileConfig == null) throw new InvalidOperationException("ProjectileConfig is not set!");
         _launchPoint = launchPoint;
         _launchVelocity = launchVelocity;
+
+        _currentBounceCount = 0;
+        _age = 0;
     }
 
     public override bool GameUpdate()
     {
         _age += Time.deltaTime;
 
-        if (_age >= _projectileConfig.MaxAge)
+        if (_age >= _shellConfig.MaxAge)
         {
             _hitNormalInfo = Vector3.zero;
             Recycle();
@@ -39,7 +40,7 @@ public class Shell : WarEntity
         }
 
         Vector3 currentPosition = _launchPoint + _launchVelocity * _age;
-        currentPosition.y -= 0.5f * _projectileConfig.Gravity * _age * _age;
+        currentPosition.y -= 0.5f * _shellConfig.Gravity * _age * _age;
         Vector3 direction = currentPosition - transform.position;
 
         if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hitInfo, direction.magnitude))
@@ -50,14 +51,14 @@ public class Shell : WarEntity
             {
                 shallInteractable.ShellTouch(hitInfo);
             }
-            if (++_currentBounceCount > _projectileConfig.MaxBounceCount)
+            if (++_currentBounceCount > _shellConfig.MaxBounceCount)
             {
                 Recycle();
                 return false;
             }
 
             Vector3 currentVelocity = _launchVelocity;
-            currentVelocity.y -= 0.5f * _projectileConfig.Gravity * _age * _age;
+            currentVelocity.y -= 0.5f * _shellConfig.Gravity * _age * _age;
             _launchVelocity = CalculateBounce(currentVelocity, hitInfo.normal);
             _launchPoint = transform.position;
             _age = 0f;
@@ -75,11 +76,11 @@ public class Shell : WarEntity
         var normal = surfaceNormal;
         var dotProduct = Vector3.Dot(incomingVelocity, normal);
         var absoluteNormalizedDotProduct = Mathf.Abs(Vector3.Dot(incomingVelocity.normalized, normal.normalized));
-        var bounceDampingFactor = Mathf.Clamp01(_projectileConfig.BounceDampingFactor - absoluteNormalizedDotProduct);
+        var bounceDampingFactor = Mathf.Clamp01(_shellConfig.BounceDampingFactor - absoluteNormalizedDotProduct);
         var reflectedVelocity = incomingVelocity - 2 * dotProduct * normal;
 
-        reflectedVelocity *= _projectileConfig.Bounciness * bounceDampingFactor;
-        reflectedVelocity.y -= _projectileConfig.Gravity * Time.deltaTime;
+        reflectedVelocity *= _shellConfig.Bounciness * bounceDampingFactor;
+        reflectedVelocity.y -= _shellConfig.Gravity * Time.deltaTime;
 
         return reflectedVelocity;
     }
