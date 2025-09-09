@@ -1,60 +1,60 @@
-﻿using System.Collections;
+﻿using Random = UnityEngine.Random;
+using System.Collections;
 using UnityEngine;
 
 public class CameraShellLaunchAnimation : MonoBehaviour
 {
     [SerializeField] private MortarShellLauncher _mortarShellLauncher;
-    [SerializeField] private float _animationDuration;
-    [SerializeField] private float _shakeIntensity;
-    [SerializeField] private float _minShakeValue;
+    [Header("Settings")]
+    [SerializeField] private Quaternion _baseRotation;
+    [SerializeField] private float _animationDuration = 0.3f;
+    [SerializeField] private float _shakeIntensity = 1f;
+    [SerializeField] private float _minShakeValue = 0.1f;
 
-    private Quaternion originalRotation;
     private Coroutine _coroutine;
-
 
     private void OnEnable()
     {
-        _mortarShellLauncher.ShellLaunched += ShakeCamera;
-        originalRotation = transform.localRotation;
+        _mortarShellLauncher.ShellLaunched += OnShellLaunched;
     }
 
-    private void OnDisable()
+    private void OnShellLaunched(ProjectileProperties projectile)
     {
-        _mortarShellLauncher.ShellLaunched -= ShakeCamera;
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
+        _coroutine = StartCoroutine(ShakeRoutine(projectile.InitialSpeed));
     }
 
-    private void ShakeCamera(ProjectileProperties projectileProperties)
+    private IEnumerator ShakeRoutine(float projectileSpeed)
     {
-        if (_coroutine != null) StopCoroutine(_coroutine);
-        _coroutine = StartCoroutine(ShakeCameraAnimation2(projectileProperties));
-    }
+        var elapsed = 0f;
+        var intensity = Mathf.Max(_shakeIntensity * projectileSpeed, _minShakeValue);
 
-    private IEnumerator ShakeCameraAnimation2(ProjectileProperties projectileProperties)
-    {
-        float time = 0;
-        float scaledShakeIntensity = Mathf.Max(_shakeIntensity * projectileProperties.InitialSpeed, _minShakeValue);
-        Quaternion targetRotation = originalRotation * Quaternion.Euler(
-              Random.Range(-scaledShakeIntensity, scaledShakeIntensity),
-              Random.Range(-scaledShakeIntensity, scaledShakeIntensity),
-              Random.Range(-scaledShakeIntensity, scaledShakeIntensity)
+        var targetRotation = _baseRotation * Quaternion.Euler(
+            Random.Range(-intensity, intensity),
+            Random.Range(-intensity, intensity),
+            Random.Range(-intensity, intensity)
         );
 
-        while (time < _animationDuration / 2)
+        while (elapsed < _animationDuration)
         {
-            time += Time.deltaTime;
-            float shakeProgress = time / _animationDuration;
-            transform.localRotation = Quaternion.Lerp(originalRotation, targetRotation, shakeProgress);
+            elapsed += Time.deltaTime;
+            var t = elapsed / _animationDuration;
+            
+            var shakeProgress = t <= 0.5f 
+                ? t * 2f 
+                : (1f - t) * 2f;
+
+            transform.localRotation = Quaternion.Lerp(_baseRotation, targetRotation, shakeProgress);
             yield return null;
         }
 
-        while (time < _animationDuration)
-        {
-            time += Time.deltaTime;
-            float shakeProgress = time / _animationDuration;
-            transform.localRotation = Quaternion.Lerp(targetRotation, originalRotation, shakeProgress);
-            yield return null;
-        }
-
-        transform.localRotation = originalRotation;
+        transform.localRotation = _baseRotation;
+    }
+    
+    private void OnDisable()
+    {
+        _mortarShellLauncher.ShellLaunched -= OnShellLaunched;
     }
 }
