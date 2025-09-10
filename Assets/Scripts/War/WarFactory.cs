@@ -21,7 +21,7 @@ public class WarFactory : GameObjectFactory, IWarEntityRecycler
 
     private T Get<T>(T prefab) where T : WarEntity
     {
-        T instance = CreateGameObjectInstance(prefab);
+        var instance = CreateGameObjectInstance(prefab);
         instance.WarEntityReclaim = this;
         return instance;
     }

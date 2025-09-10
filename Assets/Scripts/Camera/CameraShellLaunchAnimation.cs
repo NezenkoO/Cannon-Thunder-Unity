@@ -1,15 +1,13 @@
 ﻿using Random = UnityEngine.Random;
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraShellLaunchAnimation : MonoBehaviour
 {
     [SerializeField] private MortarShellLauncher _mortarShellLauncher;
-    [Header("Settings")]
-    [SerializeField] private Quaternion _baseRotation;
-    [SerializeField] private float _animationDuration = 0.3f;
-    [SerializeField] private float _shakeIntensity = 1f;
-    [SerializeField] private float _minShakeValue = 0.1f;
+    [SerializeField] private CameraShakeSettings _settings;
 
     private Coroutine _coroutine;
 
@@ -29,28 +27,28 @@ public class CameraShellLaunchAnimation : MonoBehaviour
     private IEnumerator ShakeRoutine(float projectileSpeed)
     {
         var elapsed = 0f;
-        var intensity = Mathf.Max(_shakeIntensity * projectileSpeed, _minShakeValue);
+        var intensity = Mathf.Max(_settings.ShakeIntensity * projectileSpeed, _settings.MinShakeValue);
 
-        var targetRotation = _baseRotation * Quaternion.Euler(
+        var targetRotation = _settings.DefaultLookDirection * Quaternion.Euler(
             Random.Range(-intensity, intensity),
             Random.Range(-intensity, intensity),
             Random.Range(-intensity, intensity)
         );
 
-        while (elapsed < _animationDuration)
+        while (elapsed < _settings.AnimationDuration)
         {
             elapsed += Time.deltaTime;
-            var t = elapsed / _animationDuration;
-            
-            var shakeProgress = t <= 0.5f 
-                ? t * 2f 
+            var t = elapsed / _settings.AnimationDuration;
+
+            var shakeProgress = t <= 0.5f
+                ? t * 2f
                 : (1f - t) * 2f;
 
-            transform.localRotation = Quaternion.Lerp(_baseRotation, targetRotation, shakeProgress);
+            transform.localRotation = Quaternion.Lerp(_settings.DefaultLookDirection, targetRotation, shakeProgress);
             yield return null;
         }
 
-        transform.localRotation = _baseRotation;
+        transform.localRotation = _settings.DefaultLookDirection;
     }
     
     private void OnDisable()
@@ -58,3 +56,13 @@ public class CameraShellLaunchAnimation : MonoBehaviour
         _mortarShellLauncher.ShellLaunched -= OnShellLaunched;
     }
 }
+
+[Serializable]
+public class CameraShakeSettings
+{
+    [field: SerializeField] public Quaternion DefaultLookDirection { get; private set; }
+    [field: SerializeField] public float AnimationDuration { get; private set; }
+    [field: SerializeField] public float ShakeIntensity { get; private set; }
+    [field: SerializeField] public float MinShakeValue { get; private set; }
+}
+

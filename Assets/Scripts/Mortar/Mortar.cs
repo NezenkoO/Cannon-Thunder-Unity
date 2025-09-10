@@ -1,6 +1,1 @@
-﻿using UnityEngine;
-
-public class Mortar : MonoBehaviour
-{
-
-}
+﻿public class Mortar : TransformWrapper { }

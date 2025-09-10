@@ -34,7 +34,7 @@ public class Shell : WarEntity
 
         if (_age >= _shellConfig.MaxAge)
         {
-            _hitNormalInfo = Vector3.zero;
+            _hitNormalInfo = Vector3.one;
             Recycle();
             return false;
         }
@@ -84,8 +84,7 @@ public class Shell : WarEntity
 
         return reflectedVelocity;
     }
-
-
+    
     public override void Recycle()
     {
         if(_explosionsSpawner != null)

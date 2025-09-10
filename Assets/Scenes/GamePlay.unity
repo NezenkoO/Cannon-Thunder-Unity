@@ -359,10 +359,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barrel: {fileID: 1612279532}
-  _rotationSpeed: 40
-  _barrelRotationSpeed: 20
-  _maxTiltAngle: 100
-  _minTiltAngle: 60
+  _mortar: {fileID: 138866436}
+  _settings:
+    <RotationSpeed>k__BackingField: 50
+    <BarrelRotationSpeed>k__BackingField: 30
+    <MaxTiltAngle>k__BackingField: 120
+    <MinTiltAngle>k__BackingField: 60
 --- !u!114 &138866436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,9 +408,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barrel: {fileID: 1612279532}
   _mortarShellLauncher: {fileID: 138866437}
-  _recoilMagnitude: 0.1
-  _minRecoilValue: 3
-  _animationDuration: 0.15
+  _settings:
+    <RecoilMagnitude>k__BackingField: 0.22
+    <MinRecoilValue>k__BackingField: 0.1
+    <AnimationDuration>k__BackingField: 0.19
 --- !u!1 &226359806
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,10 +1002,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mortarShellLauncher: {fileID: 138866437}
-  _baseRotation: {x: 0.020044172, y: -0.018676577, z: 0.0016804693, w: -0.99962324}
-  _animationDuration: 0.1
-  _shakeIntensity: 0.06
-  _minShakeValue: 2
+  _settings:
+    <DefaultLookDirection>k__BackingField: {x: 0.020044174, y: -0.018676579, z: 0.0016804696, w: -0.9996233}
+    <AnimationDuration>k__BackingField: 0.15
+    <ShakeIntensity>k__BackingField: 0.15
+    <MinShakeValue>k__BackingField: 0.1
 --- !u!1 &1071606085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,12 +1877,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitMarker: {fileID: 77858728}
-  maxPoints: 50
-  increment: 0.025
-  rayOverlap: 1.1
+  _settings:
+    <MaxPoints>k__BackingField: 50
+    <Increment>k__BackingField: 0.025
+    <RayOverlap>k__BackingField: 1.1
   _barrel: {fileID: 1612279532}
   _mortarShellLauncher: {fileID: 138866437}
-  _mortarMovement: {fileID: 138866435}
   _powerSlide: {fileID: 1340836220}
 --- !u!114 &1612279532
 MonoBehaviour:

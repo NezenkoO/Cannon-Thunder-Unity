@@ -1,23 +1,21 @@
 ﻿using UnityEngine;
+using System;
 
 [RequireComponent(typeof(LineRenderer))]
 public class TrajectoryPredictor : MonoBehaviour
 {
     [SerializeField] private HitMarker _hitMarker;
-    [Header("Settings")]
-    [SerializeField, Range(10, 100)] private int maxPoints = 50;
-    [SerializeField, Range(0.01f, 0.5f)] private float increment = 0.025f;
-    [SerializeField, Range(1.05f, 2f)] private float rayOverlap = 1.1f;
+    [SerializeField] private TrajectoryPredictorSettings _settings;
 
-    private LineRenderer trajectoryLine;
-    private Vector3[] pointsBuffer;
+    private LineRenderer _trajectoryLine;
+    private Vector3[] _pointsBuffer;
 
     private void Awake()
     {
-        trajectoryLine = GetComponent<LineRenderer>();
-        trajectoryLine.enabled = true;
+        _trajectoryLine = GetComponent<LineRenderer>();
+        _trajectoryLine.enabled = true;
 
-        pointsBuffer = new Vector3[maxPoints];
+        _pointsBuffer = new Vector3[_settings.MaxPoints];
     }
 
     public void PredictTrajectory(ProjectileProperties projectile)
@@ -25,35 +23,40 @@ public class TrajectoryPredictor : MonoBehaviour
         var velocity = projectile.Direction * projectile.InitialSpeed;
         var position = projectile.InitialPosition;
 
-        pointsBuffer[0] = position;
-
+        _pointsBuffer[0] = position;
         var actualPoints = 1;
 
-        for (var i = 1; i < maxPoints; i++)
+        for (var i = 1; i < _settings.MaxPoints; i++)
         {
-            velocity += Physics.gravity * increment;
-            var nextPosition = position + velocity * increment;
+            velocity += Physics.gravity * _settings.Increment;
+            var nextPosition = position + velocity * _settings.Increment;
 
-            var overlap = velocity.magnitude * increment * rayOverlap;
+            var overlap = velocity.magnitude * _settings.Increment * _settings.RayOverlap;
 
             if (Physics.Raycast(position, velocity.normalized, out var hit, overlap))
             {
-                pointsBuffer[i] = hit.point;
+                _pointsBuffer[i] = hit.point;
                 actualPoints = i + 1;
-                
                 _hitMarker.Enable(hit.point, hit.normal);
-                
                 break;
             }
 
             _hitMarker.Disable();
-            
-            pointsBuffer[i] = nextPosition;
+
+            _pointsBuffer[i] = nextPosition;
             position = nextPosition;
             actualPoints = i + 1;
         }
 
-        trajectoryLine.positionCount = actualPoints;
-        trajectoryLine.SetPositions(pointsBuffer);
+        _trajectoryLine.positionCount = actualPoints;
+        _trajectoryLine.SetPositions(_pointsBuffer);
     }
+}
+
+[Serializable]
+public class TrajectoryPredictorSettings
+{
+    [field: SerializeField, Range(10, 100)] public int MaxPoints { get; private set; }
+    [field: SerializeField, Range(0.01f, 0.5f)] public float Increment { get; private set; }
+    [field: SerializeField, Range(1.05f, 2f)] public float RayOverlap { get; private set; }
 }

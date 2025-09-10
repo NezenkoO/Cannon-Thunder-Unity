@@ -1,18 +1,12 @@
 using UnityEngine;
 
-public class Barrel : MonoBehaviour
+public class Barrel : TransformWrapper
 {
+    public Vector3 DefaultLocalPosition { get; private set; }
     public Vector3 LookDirection => Transform.up;
-    public Transform Transform
+
+    private void Awake()
     {
-        get
-        {
-            if (_cachedTransform == null)
-                _cachedTransform = transform;
-            
-            return _cachedTransform;
-        }
+        DefaultLocalPosition = Transform.localPosition;
     }
-    
-    private Transform _cachedTransform;
 }
