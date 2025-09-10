@@ -154,7 +154,6 @@ Transform:
   m_Children:
   - {fileID: 1462443721}
   - {fileID: 705507995}
-  - {fileID: 138866433}
   - {fileID: 1071606086}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -170,6 +169,7 @@ GameObject:
   - component: {fileID: 77858726}
   - component: {fileID: 77858725}
   - component: {fileID: 77858724}
+  - component: {fileID: 77858728}
   m_Layer: 0
   m_Name: HitPoint
   m_TagString: Untagged
@@ -263,6 +263,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &77858728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77858723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e7a3696e424eebb1edbc4d6ce8eb19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &95468056
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,14 +337,14 @@ Transform:
   m_GameObject: {fileID: 138866432}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0048288973, y: -0.06488459, z: 0.00031400015, w: -0.9978811}
-  m_LocalPosition: {x: 22.407719, y: 18.05188, z: -26.327177}
+  m_LocalPosition: {x: 2.1160717, y: -1.4665282, z: -20.847605}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
   - {fileID: 1352467538}
   - {fileID: 1612279525}
-  m_Father: {fileID: 46781771}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0.555, y: 367.441, z: 0}
 --- !u!114 &138866435
 MonoBehaviour:
@@ -346,8 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e53417722b090d4c9d51b7450dfbfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _barrel: {fileID: 1612279525}
-  _mortar: {fileID: 138866433}
+  _barrel: {fileID: 1612279532}
   _rotationSpeed: 40
   _barrelRotationSpeed: 20
   _maxTiltAngle: 100
@@ -376,9 +387,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ae3c4b95c09c243b028e2a4dd6bcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _barrel: {fileID: 1612279532}
   _launchPoint: {fileID: 1612279525}
   _warFactory: {fileID: 11400000, guid: 03ef2d0dbb01cf848812254a2ee2f182, type: 2}
-  _mortarMovement: {fileID: 138866435}
   _powerSlider: {fileID: 1340836220}
   _explosionsSpawner: {fileID: 497878972}
 --- !u!114 &138866438
@@ -393,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4afb05448579fd14297c2785d28f8084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _barrel: {fileID: 1612279525}
+  _barrel: {fileID: 1612279532}
   _mortarShellLauncher: {fileID: 138866437}
   _recoilMagnitude: 0.1
   _minRecoilValue: 3
@@ -968,8 +979,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.020044172, y: -0.018676577, z: 0.0016804693, w: -0.99962324}
-  m_LocalPosition: {x: -1.01, y: 1.16, z: -1.24}
+  m_LocalRotation: {x: 0.020044174, y: -0.018676579, z: 0.0016804696, w: -0.9996233}
+  m_LocalPosition: {x: -0.8599998, y: 0.91999996, z: -0.88000077}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -988,6 +999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mortarShellLauncher: {fileID: 138866437}
+  _baseRotation: {x: 0.020044172, y: -0.018676577, z: 0.0016804693, w: -0.99962324}
   _animationDuration: 0.1
   _shakeIntensity: 0.06
   _minShakeValue: 2
@@ -1038,7 +1050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultTexture: {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
   _burstTexture: {fileID: 2800000, guid: 18a0bb091f26c0e40ab0a98b8df49111, type: 3}
-  burstSize: 1
+  _burstSize: 1
 --- !u!1 &1309477624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1469,8 +1481,8 @@ Transform:
   m_GameObject: {fileID: 1352467537}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.15, y: 0.24, z: -0.36}
-  m_LocalScale: {x: 0.67473, y: 0.67473, z: 0.8533985}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.67473, y: 0.6747302, z: 0.8533985}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 138866433}
@@ -1671,6 +1683,7 @@ GameObject:
   - component: {fileID: 1612279527}
   - component: {fileID: 1612279530}
   - component: {fileID: 1612279531}
+  - component: {fileID: 1612279532}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -1686,9 +1699,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612279524}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.11, y: 0.73, z: -0.33}
-  m_LocalScale: {x: 0.67473006, y: 0.67473, z: 0.6747301}
+  m_LocalRotation: {x: 0.7071068, y: 0.0000000037252899, z: -0.0000000014406394, w: 0.7071068}
+  m_LocalPosition: {x: 0.040000245, y: 0.49000007, z: 0.02999986}
+  m_LocalScale: {x: 0.67473006, y: 0.67473024, z: 0.6747304}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 138866433}
@@ -1859,13 +1872,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ed34c091b6e9e4bad12681e6e59cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitMarker: {fileID: 77858727}
-  maxPoints: 100
+  _hitMarker: {fileID: 77858728}
+  maxPoints: 50
   increment: 0.025
   rayOverlap: 1.1
+  _barrel: {fileID: 1612279532}
   _mortarShellLauncher: {fileID: 138866437}
   _mortarMovement: {fileID: 138866435}
   _powerSlide: {fileID: 1340836220}
+--- !u!114 &1612279532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612279524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55e88619ff1bd3499e94cc615e3e2ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1665844430
 GameObject:
   m_ObjectHideFlags: 0
@@ -2113,7 +2139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultTexture: {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
   _burstTexture: {fileID: 2800000, guid: 18a0bb091f26c0e40ab0a98b8df49111, type: 3}
-  burstSize: 1
+  _burstSize: 1
 --- !u!1 &1993490656
 GameObject:
   m_ObjectHideFlags: 0
@@ -2399,6 +2425,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1756022212}
   - {fileID: 77858727}
+  - {fileID: 138866433}
   - {fileID: 46781771}
   - {fileID: 1326641713}
   - {fileID: 95468057}

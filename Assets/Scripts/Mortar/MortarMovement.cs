@@ -2,10 +2,9 @@
 
 public class MortarMovement : MonoBehaviour
 {
-    public Vector3 LookDirection => _barrel.up;
+    [SerializeField] private Barrel _barrel;
 
-    [SerializeField] private Transform _barrel;
-    [SerializeField] private Transform _mortar;
+    [Header("Settings")]
     [SerializeField] private float _rotationSpeed;
     [SerializeField] private float _barrelRotationSpeed;
     [SerializeField] private float _maxTiltAngle = 120;
@@ -30,6 +29,7 @@ public class MortarMovement : MonoBehaviour
 
         _currentTiltAngle += vertical * -1 * _barrelRotationSpeed * Time.deltaTime;
         _currentTiltAngle = Mathf.Clamp(_currentTiltAngle, _minTiltAngle, _maxTiltAngle);
-        _barrel.localEulerAngles = new Vector3(_currentTiltAngle, 0, 0);
+
+        _barrel.Transform.localEulerAngles = new Vector3(_currentTiltAngle, 0, 0);
     }
 }

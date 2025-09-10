@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MortarRecoilAnimation : MonoBehaviour
 {
-    [SerializeField] private Transform _barrel;
+    [SerializeField] private Barrel _barrel;
     [SerializeField] private MortarShellLauncher _mortarShellLauncher;
     [SerializeField] private float _recoilMagnitude;
     [SerializeField] private float _minRecoilValue;
@@ -15,7 +15,7 @@ public class MortarRecoilAnimation : MonoBehaviour
     private void OnEnable()
     {
         _mortarShellLauncher.ShellLaunched += Recoil;
-        _originalPosition = _barrel.localPosition;
+        _originalPosition = _barrel.Transform.localPosition;
     }
 
     private void Recoil(ProjectileProperties projectileProperties)
@@ -30,23 +30,23 @@ public class MortarRecoilAnimation : MonoBehaviour
     {
         float time = 0;
         var recoilDistance = Mathf.Max(_recoilMagnitude * projectileProperties.InitialSpeed, _minRecoilValue);
-        _barrel.localPosition = _originalPosition;
+        _barrel.Transform.localPosition = _originalPosition;
 
         while (time <= _animationDuration / 2)
         {
             time += Time.deltaTime;
-            _barrel.Translate(-_barrel.up * (recoilDistance * Time.deltaTime), Space.World);
+            _barrel.Transform.Translate(-_barrel.Transform.up * (recoilDistance * Time.deltaTime), Space.World);
             yield return null;
         }
 
         while (time <= _animationDuration)
         {
             time += Time.deltaTime;
-            _barrel.Translate(_barrel.up * (recoilDistance * Time.deltaTime), Space.World);
+            _barrel.Transform.Translate(_barrel.Transform.up * (recoilDistance * Time.deltaTime), Space.World);
             yield return null;
         }
 
-        _barrel.localPosition = _originalPosition;
+        _barrel.Transform.localPosition = _originalPosition;
     }
     
     private void OnDisable()
