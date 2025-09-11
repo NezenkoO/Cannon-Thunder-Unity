@@ -1,18 +1,16 @@
 ﻿using UnityEngine;
 using System;
 
-[RequireComponent(typeof(LineRenderer))]
 public class TrajectoryPredictor : MonoBehaviour
 {
     [SerializeField] private HitMarker _hitMarker;
+    [SerializeField] private LineRenderer _trajectoryLine;
     [SerializeField] private TrajectoryPredictorSettings _settings;
-
-    private LineRenderer _trajectoryLine;
+    
     private Vector3[] _pointsBuffer;
 
     private void Awake()
     {
-        _trajectoryLine = GetComponent<LineRenderer>();
         _trajectoryLine.enabled = true;
 
         _pointsBuffer = new Vector3[_settings.MaxPoints];

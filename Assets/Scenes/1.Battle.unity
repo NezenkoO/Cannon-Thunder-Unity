@@ -168,7 +168,6 @@ GameObject:
   - component: {fileID: 77858727}
   - component: {fileID: 77858726}
   - component: {fileID: 77858725}
-  - component: {fileID: 77858724}
   - component: {fileID: 77858728}
   m_Layer: 0
   m_Name: HitPoint
@@ -177,27 +176,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &77858724
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77858723}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &77858725
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -409,9 +387,37 @@ MonoBehaviour:
   _barrel: {fileID: 1612279532}
   _mortarShellLauncher: {fileID: 138866437}
   _settings:
-    <RecoilMagnitude>k__BackingField: 0.22
+    <RecoilMagnitude>k__BackingField: 0.8
     <MinRecoilValue>k__BackingField: 0.1
-    <AnimationDuration>k__BackingField: 0.19
+    <MaxRecoilValue>k__BackingField: 1.5
+    <SpeedNormalization>k__BackingField: 50
+    <AnimationDuration>k__BackingField: 0.25
+    <Vibrato>k__BackingField: 8
+    <Elasticity>k__BackingField: 0.6
+    <RecoilCurve>k__BackingField:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.2
+        inSlope: 0
+        outSlope: 0.8
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0.8
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!1 &226359806
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,7 +988,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.020044174, y: -0.018676579, z: 0.0016804696, w: -0.9996233}
+  m_LocalRotation: {x: 0.020044174, y: -0.018676586, z: 0.0016804696, w: -0.99962324}
   m_LocalPosition: {x: -0.8599998, y: 0.91999996, z: -0.88000077}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1007,6 +1013,8 @@ MonoBehaviour:
     <AnimationDuration>k__BackingField: 0.15
     <ShakeIntensity>k__BackingField: 0.15
     <MinShakeValue>k__BackingField: 0.1
+    <OutEase>k__BackingField: 6
+    <InEase>k__BackingField: 5
 --- !u!1 &1071606085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,7 +1494,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.67473, y: 0.6747302, z: 0.8533985}
+  m_LocalScale: {x: 0.67473, y: 0.67473036, z: 0.8533985}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 138866433}
@@ -1703,9 +1711,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612279524}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0.0000000037252899, z: -0.0000000014406394, w: 0.7071068}
-  m_LocalPosition: {x: 0.040000245, y: 0.49000007, z: 0.02999986}
-  m_LocalScale: {x: 0.67473006, y: 0.67473024, z: 0.6747304}
+  m_LocalRotation: {x: 0.7071068, y: 0.0000000074505797, z: -0.0000000014551913, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0.537, z: -0.005}
+  m_LocalScale: {x: 0.67473006, y: 0.6747305, z: 0.6747307}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 138866433}
@@ -1877,6 +1885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitMarker: {fileID: 77858728}
+  _trajectoryLine: {fileID: 1612279530}
   _settings:
     <MaxPoints>k__BackingField: 50
     <Increment>k__BackingField: 0.025
@@ -1964,64 +1973,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!1 &1756022210
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1756022212}
-  - component: {fileID: 1756022211}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!143 &1756022211
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756022210}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &1756022212
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756022210}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.015275471, y: -0.07965785, z: 0.00065911724, w: -0.99670506}
-  m_LocalPosition: {x: -0.25902367, y: 0.3401451, z: -21.171284}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -1.739, y: 369.142, z: -0.215}
 --- !u!1 &1873551584
 GameObject:
   m_ObjectHideFlags: 0
@@ -2427,7 +2378,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1756022212}
   - {fileID: 77858727}
   - {fileID: 138866433}
   - {fileID: 46781771}
